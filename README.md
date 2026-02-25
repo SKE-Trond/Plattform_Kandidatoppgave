@@ -95,3 +95,7 @@ Du kan også legge dette til lokalt med Jenkins om du er konfortabel med det.
 
 Kan antall podder bli satt automatisk?
 
+### Oversett server til Go
+
+Skriv om koden i server til Golang kode, og kjør den opp i stedet for den serveren som er vedlagt. 
+
