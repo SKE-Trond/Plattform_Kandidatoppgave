@@ -7,10 +7,9 @@ Ting som er relevante å vise frem:
 - Finne frem i kode for å finner porter, endepunkter og eventuelt endre på disse parameterene. 
 - Containerization av koden/filene. 
 - IaC
-- Bruk av Grafana, med tilhørende konfigurasjon
-- Oppsett og bruk av metrikker, log og trace.
+- Deploy som microservices
 
-Steget med å sette opp Grafana og dashboards som viser helsestatus er viktig, og mye av dette kan løses uten logg og trace. Husk derfor å bruke tiden fornuftig.  
+**Vis hvordan du tenker å håndtere flere deler i et cluster. Bruk gjerne Helm charts for eksempel. Vis/beskriv hva som er viktig å tenke på i forhold til robusthet, skalering, sikkerhet, m.m.**
 
 ## Tidsbruk
 
@@ -39,7 +38,7 @@ Husk at alle hjelpemidler, bortsett fra å få hjelp av andre personer, er tilgj
 
 **Lever besvarelsen på GitHub.** Legg ved Dockerfiler, yaml filer, eller hva enn du velger å bruke for å løse oppgaven.
 Legg også ved en **README.md** som beskriver løsningen og kjøring av systemet. 
-**Lever oppgaven som et privat repo som du deler med brukerene spesifisert i innkallingen.*
+**Lever oppgaven som et privat repo som du deler med brukerene spesifisert i innkallingen.**
 
 ### Container
 
@@ -49,18 +48,18 @@ Kjør server og klient som seperate pods. Gjennomfør resten av oppgaven i clust
 
 Husk å endre `SERVER_URL` i client koden.
 
-( Hvis det ikke er mulig å få til lokalt cluster, så kan de andre stegene fint gjennomføres uten cluster. )
+( Hvis du får problemer med å lage containers av koden, så kan du prøve å finne alternativer som viser kommunikasjon mellom pods/containers )
 
-( Et annet alternativ er å bare bruke docker direkte, men helst sammen med docker-compose )
 
 ### Grafana
 
 Legg til Grafana og sjekk at den kjører. Siste versjon burde fungere fint for denne oppgaven. 
 
+Det er best om du får med metrikker og logg fra server/client, men om du ikke får til den delen så finnes det standard metrikker.
 
 ### Metrikker
 
-Legg til Prometheus og scrape metrikker.
+Legg til Prometheus og scrape metrikker. 
 
 DataSource for Prometheus må settes opp i Grafana.
 
@@ -73,87 +72,26 @@ Se at metrikkene er tilgjengelige i Grafana med å bruke riktig DataSource.
 
 Legg til Loki som komponent. 
 
-Bruk Promtail for å sende loggene. 
+**En utfordring her er å bruke microservice mode**
 
-( Siden dette er lokalt og demo/oppgave så er det ok å mounte docker socket direkte til Promtail komponenten )
+Bruk Promtail for å sende loggene. 
 
 Se at loggene er tilgjengelig i Grafana fra Loki. Husk å sette opp DataSource for Loki og å ta den i bruk i Grafana.
 
-Sett opp filter og søk. Finn relevante logglinjer. 
-
 OBS: Loggene er enkle og har ikke mye å sortere på. Det er ikke forventet at det finnes gode labels annet enn å sortere på hvilken komponent det gjelder.
 
+## Ekstra
 
-### Trace
-
-(Avansert)
-
-Legg til Tempo i cluster og lytt på rett port. Port finner du i logg og/eller server/klient koden.
-
-Det kan hende noen kodeendringer må gjøres først, og rebuild av docker images.
-
-Bruk Tempo data source i Grafana og finn traces.
-
-( Her kan det være noen snubbletråder, og husk å bruk tiden fornuftig på andre steg først om du sitter fast. )
-
-
-### Dashboard og oversikt
-
-**Husk screenshots i besvarelsen.**
-
-Bruk Grafana til å sette opp dashboard for å se hvordan applikasjonene oppfører seg. 
-
-#### RED
-
-En fin måte å se generell helsetilstand er å bruke Requests, Error og Delay til å lage dashboard.
-
-Finn relevant metrikker fra serverapplikasjonen og sett opp en oversikt over hvor lang tid det tar å behandle forespørsler.
-Histogram fra Prometheus metrikker kan være litt knot i Grafana, men det er fine guider lett tilgjengelig rundt forbi.
-
-For Request delen så sjekk raten på forespørsler. 
-
-Error er liknende, men sjekk f.eks. 500 responser. 
-
-( Her kan du selvsagt også bruke data fra logger og trace )
-
-#### SLO
-
-Du trenger ikke å sette opp noe i Grafana, men tenk over hva som er relevant her i forhold til SLO. 
-
-- Hvilken datakilde er relevant som SLI?
-- Hvis vi tenker at applikasjonen kjører tilfredsstillende, hvilke grenseverdier er relevante for feil og forsinkelser?
-
-#### Trace
-
-Få opp trace hvis du har fått lagt det inn og legg ved screenshots.
-
-#### Logger
-
-Vis loggene i dashboards.
-
-#### Alarmer
-
-Ikke tenk på at alarmene må sendes en plass. Vis heller hva som er grunnlaget for alarmene. 
-
-#### Provisioning
-
-(Valgfritt)
-
-Legg ved filer for provisioning av Grafana i løsningen.
+Oppgaver som kan gjøres om det blir nok tid. 
 
 ### CI/CD
-
-( Valgfritt, men nyttig )
 
 Sett opp en pipeline i Github eller liknende hvor du viser at du forstår hvilke steg 
 som er relevante. 
 
 Du kan også legge dette til lokalt med Jenkins om du er konfortabel med det.
 
+### Skalering i cluster
 
-### Forslag til andre elementer
+Kan antall podder bli satt automatisk?
 
-( Veldig valgfritt ) 
-
-- Sikkerhet/nettverk i cluster
-- Horisontal skalering i Kubernetes. Her lagres data direkte i server applikasjonen, slik at HA ikke er gunstig i praksis, men du kan vise konseptet om du er komfortabel med det.
