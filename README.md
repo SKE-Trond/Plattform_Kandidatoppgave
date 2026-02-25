@@ -74,7 +74,7 @@ Legg til Loki som komponent.
 
 **En utfordring her er å bruke microservice mode**
 
-Bruk Promtail for å sende loggene. 
+Bruk f.eks. Promtail eller Alloy for å sende logger til Loki. 
 
 Se at loggene er tilgjengelig i Grafana fra Loki. Husk å sette opp DataSource for Loki og å ta den i bruk i Grafana.
 
